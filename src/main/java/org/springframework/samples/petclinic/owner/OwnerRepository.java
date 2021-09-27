@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -60,5 +61,13 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	 * @param owner the {@link Owner} to save
 	 */
 	void save(Owner owner);
+
+	@Query("SELECT owner FROM Owner owner WHERE owner.lastName LIKE :name% OR owner.firstName LIKE :name%")
+	@Transactional(readOnly = true)
+	List<Owner> findOwnerByFirstNameContainsOrLastNameContains(@Param("name") String name);
+
+	@Query("SELECT owner FROM Owner owner ORDER BY owner.lastName")
+	@Transactional(readOnly = true)
+	Collection<Owner> orderByLastName();
 
 }

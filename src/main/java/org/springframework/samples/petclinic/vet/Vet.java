@@ -48,22 +48,22 @@ public class Vet extends Person {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
-	private Set<Specialty> specialties;
+	private Set<Speciality> specialties;
 
-	protected Set<Specialty> getSpecialtiesInternal() {
+	protected Set<Speciality> getSpecialtiesInternal() {
 		if (this.specialties == null) {
 			this.specialties = new HashSet<>();
 		}
 		return this.specialties;
 	}
 
-	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
+	protected void setSpecialtiesInternal(Set<Speciality> specialties) {
 		this.specialties = specialties;
 	}
 
 	@XmlElement
-	public List<Specialty> getSpecialties() {
-		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
+	public List<Speciality> getSpecialties() {
+		List<Speciality> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
 		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedSpecs);
 	}
@@ -72,8 +72,13 @@ public class Vet extends Person {
 		return getSpecialtiesInternal().size();
 	}
 
-	public void addSpecialty(Specialty specialty) {
+	public void addSpecialty(Speciality specialty) {
 		getSpecialtiesInternal().add(specialty);
 	}
+
+	 @Override public String toString() { return "Vet [Speciality=" + specialties +
+	  ", Nombre=" + getFirstName() + ", Apellido=" + getLastName() + ", Id()=" + getId()
+	  + "]"; }
+	
 
 }
